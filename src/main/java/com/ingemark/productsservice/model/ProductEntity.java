@@ -30,6 +30,9 @@ public class ProductEntity {
     @PositiveOrZero
     private float price;
 
+    @Enumerated
+    private Currency currency;
+
     private String description;
 
     @Column(name = "is_available")
