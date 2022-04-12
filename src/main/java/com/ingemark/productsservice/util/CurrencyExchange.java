@@ -14,7 +14,7 @@ public class CurrencyExchange {
 
     private static final String HNB_URL = "https://api.hnb.hr/tecajn/v2?valuta=";
 
-    public static HnbModel getCurrencyExchange(Currency currency) {
+    public HnbModel getCurrencyExchange(Currency currency) {
 
         RestTemplate restTemplate = new RestTemplate();
         var hnbModel = restTemplate.getForObject(HNB_URL + currency.name(), HnbModel[].class);

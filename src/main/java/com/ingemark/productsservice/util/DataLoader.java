@@ -48,7 +48,15 @@ public class DataLoader implements ApplicationRunner {
         shirt.setCurrency(Currency.HRK);
         shirt.setAvailable(true);
 
-        productRepository.saveAll(List.of(iPhone, audi, shirt));
+        ProductEntity watch = new ProductEntity();
+        watch.setId(4);
+        watch.setCode("5555555555");
+        watch.setName("Rolex");
+        watch.setPrice(900);
+        watch.setCurrency(Currency.EUR);
+        watch.setAvailable(true);
+
+        productRepository.saveAll(List.of(iPhone, audi, shirt, watch));
 
     }
 
