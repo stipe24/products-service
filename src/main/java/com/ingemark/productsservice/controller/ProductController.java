@@ -24,12 +24,12 @@ public class ProductController {
     }
 
     @PostMapping
-    public ProductEntity create(ProductRequest product) {
+    public ProductEntity create(@RequestBody ProductRequest product) {
         return productService.save(product);
     }
 
     @PatchMapping("/{id}")
-    public ProductEntity update(@PathVariable int id, ProductRequest product) {
+    public ProductEntity update(@PathVariable int id, @RequestBody ProductRequest product) {
         return productService.update(id, product);
     }
 

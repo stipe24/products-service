@@ -19,8 +19,8 @@ public class Product {
 
     private boolean isAvailable;
 
-    private Float priceHrk;
+    private String priceHrk;
 
-    private Float priceEur;
+    private String priceEur;
 
 }

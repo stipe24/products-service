@@ -3,6 +3,7 @@ package com.ingemark.productsservice.service;
 import com.ingemark.productsservice.model.*;
 import com.ingemark.productsservice.repository.ProductRepository;
 import com.ingemark.productsservice.util.CurrencyExchange;
+import com.ingemark.productsservice.util.CurrencyExchangeResolver;
 import com.ingemark.productsservice.util.NumberUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,8 +19,8 @@ public class ProductService {
     private final CurrencyExchange currencyExchange;
 
     public List<Product> get() {
-        var hnbEurModel = currencyExchange.getCurrencyExchange(Currency.EUR);
-        return productRepository.findAll().stream().map(p -> map(p, hnbEurModel)).collect(Collectors.toList());
+        CurrencyExchanges currencyExchanges = (CurrencyExchanges) currencyExchange.getCurrencyExchange();
+        return productRepository.findAll().stream().map(p -> map(p, currencyExchanges)).collect(Collectors.toList());
     }
 
     public ProductEntity save(ProductRequest product) {
@@ -44,14 +45,14 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
-    private Product map(ProductEntity productEntity, HnbModel hnbModel) {
+    private Product map(ProductEntity productEntity, CurrencyExchanges currencyExchanges) {
         return Product.builder()
                 .code(productEntity.getCode())
                 .name(productEntity.getName())
                 .description(productEntity.getDescription())
                 .isAvailable(productEntity.isAvailable())
-                .priceHrk(Currency.HRK.equals(productEntity.getCurrency()) ? productEntity.getPrice() : productEntity.getPrice()* NumberUtils.safelyToFloat(hnbModel.getMiddleRate()))
-                .priceEur(Currency.EUR.equals(productEntity.getCurrency()) ? productEntity.getPrice() : productEntity.getPrice()* NumberUtils.safelyToFloat(hnbModel.getMiddleRate()))
+                .priceHrk(NumberUtils.round(productEntity.getPrice()))
+                .priceEur(CurrencyExchangeResolver.resolvePriceInEur(productEntity.getPrice(), currencyExchanges))
                 .build();
     }
 
