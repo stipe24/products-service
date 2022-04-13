@@ -44,7 +44,7 @@ public class DataLoader implements ApplicationRunner {
         shirt.setId(3);
         shirt.setCode("9999999999");
         shirt.setName("New Shirt");
-        shirt.setPrice(105.60f);
+        shirt.setPrice(105.60);
         shirt.setCurrency(Currency.HRK);
         shirt.setAvailable(true);
 

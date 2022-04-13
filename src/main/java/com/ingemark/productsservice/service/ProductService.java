@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static com.ingemark.productsservice.model.ProductRequest.toEntity;
+
 @Service
 @AllArgsConstructor
 public class ProductService {
@@ -20,11 +22,12 @@ public class ProductService {
 
     public List<Product> get() {
         CurrencyExchanges currencyExchanges = (CurrencyExchanges) currencyExchange.getCurrencyExchange();
-        return productRepository.findAll().stream().map(p -> map(p, currencyExchanges)).collect(Collectors.toList());
+        return productRepository.findAll().stream()
+                .map(product -> map(product, currencyExchanges)).collect(Collectors.toList());
     }
 
     public ProductEntity save(ProductRequest product) {
-        return productRepository.save(from(product));
+        return productRepository.save(toEntity(product));
     }
 
     public ProductEntity update(int id, ProductRequest product) {
@@ -52,18 +55,7 @@ public class ProductService {
                 .description(productEntity.getDescription())
                 .isAvailable(productEntity.isAvailable())
                 .priceHrk(NumberUtils.round(productEntity.getPrice()))
-                .priceEur(CurrencyExchangeResolver.resolvePriceInEur(productEntity.getPrice(), currencyExchanges))
-                .build();
-    }
-
-    private ProductEntity from(ProductRequest product) {
-        return ProductEntity.builder()
-                .code(product.getCode())
-                .name(product.getName())
-                .price(product.getPrice())
-                .currency(product.getCurrency())
-                .description(product.getDescription())
-                .isAvailable(product.isAvailable())
+                .priceEur(CurrencyExchangeResolver.resolveEurPrice(productEntity.getPrice(), currencyExchanges))
                 .build();
     }
 

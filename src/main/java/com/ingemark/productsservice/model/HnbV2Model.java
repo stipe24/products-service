@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class HnbModel implements Serializable {
+public class HnbV2Model implements Serializable {
 
     @JsonProperty("valuta")
     private String currency;
@@ -23,5 +23,9 @@ public class HnbModel implements Serializable {
 
     @JsonProperty("prodajni_tecaj")
     private String sellingRate;
+
+    public HnbV2Model(String middleRate) {
+        this.middleRate = middleRate;
+    }
 
 }

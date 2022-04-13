@@ -12,6 +12,6 @@ import java.util.Map;
 @NoArgsConstructor
 public class CurrencyExchanges implements Serializable {
 
-    private Map<Currency, HnbModel> currencyExchanges;
+    private Map<Currency, HnbV2Model> currencyExchanges;
 
 }

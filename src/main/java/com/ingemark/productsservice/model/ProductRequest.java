@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PositiveOrZero;
+import javax.validation.constraints.Size;
 
 @Data
 @AllArgsConstructor
@@ -13,6 +14,7 @@ import javax.validation.constraints.PositiveOrZero;
 public class ProductRequest {
 
     @NotNull(message = "Code cannot be null")
+    @Size(min = 10, max = 10)
     private String code;
 
     @NotNull(message = "Name cannot be null")
@@ -26,6 +28,17 @@ public class ProductRequest {
 
     private String description;
 
-    private boolean isAvailable;
+    private boolean isAvailable = true;
+
+    public static ProductEntity toEntity(ProductRequest product) {
+        return ProductEntity.builder()
+                .code(product.getCode())
+                .name(product.getName())
+                .price(product.getPrice())
+                .currency(product.getCurrency())
+                .description(product.getDescription())
+                .isAvailable(product.isAvailable())
+                .build();
+    }
 
 }
