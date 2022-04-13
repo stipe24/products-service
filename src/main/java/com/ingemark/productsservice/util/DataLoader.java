@@ -17,7 +17,7 @@ public class DataLoader implements ApplicationRunner {
     private final ProductRepository productRepository;
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
+    public void run(ApplicationArguments args) {
         populateData();
     }
 

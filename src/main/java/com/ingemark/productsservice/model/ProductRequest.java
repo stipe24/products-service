@@ -13,9 +13,9 @@ public class ProductRequest {
 
     private String name;
 
-    private float price;
+    private double price;
 
-    private Currency currency;
+    private Currency currency = Currency.HRK;
 
     private String description;
 

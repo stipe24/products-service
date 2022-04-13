@@ -30,7 +30,7 @@ public class ProductEntity {
     private String name;
 
     @PositiveOrZero
-    private float price;
+    private double price;
 
     @Enumerated
     private Currency currency;

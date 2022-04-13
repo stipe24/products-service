@@ -14,24 +14,24 @@ public final class NumberUtils {
 
     private static final String DECIMAL_FORMAT = "#.##";
 
-    public static Float safelyToFloat(String value) {
+    public static Double safelyToDouble(String value) {
         if (Objects.isNull(value)) {
             return null;
         }
         try {
-            return Float.valueOf(value.replace(",", "."));
+            return Double.valueOf(value.replace(",", "."));
         } catch (NumberFormatException e) {
             log.error("Error occurred while parsing " + value);
-            return null;
+            throw e;
         }
     }
 
-    public static String round(Float number) {
+    public static String round(Double number) {
         if (Objects.isNull(number)) {
             return null;
         }
         DecimalFormat df = new DecimalFormat(DECIMAL_FORMAT);
-        df.setRoundingMode(RoundingMode.CEILING);
+        df.setRoundingMode(RoundingMode.HALF_UP);
         return df.format(number);
     }
 
