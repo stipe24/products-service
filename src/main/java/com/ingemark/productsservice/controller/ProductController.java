@@ -1,12 +1,9 @@
 package com.ingemark.productsservice.controller;
 
 import com.ingemark.productsservice.model.Product;
-import com.ingemark.productsservice.model.ProductEntity;
 import com.ingemark.productsservice.model.ProductRequest;
 import com.ingemark.productsservice.service.ProductService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -20,17 +17,22 @@ public class ProductController {
     private final ProductService productService;
 
     @GetMapping
-    public ResponseEntity<List<Product>> getProducts() {
-        return new ResponseEntity<>(productService.get(), HttpStatus.OK);
+    public List<Product> get() {
+        return productService.get();
+    }
+
+    @GetMapping("/{id}")
+    public Product get(@PathVariable int id) {
+        return productService.get(id);
     }
 
     @PostMapping
-    public ProductEntity create(@Valid @RequestBody ProductRequest product) {
+    public Product create(@Valid @RequestBody ProductRequest product) {
         return productService.save(product);
     }
 
     @PatchMapping("/{id}")
-    public ProductEntity update(@PathVariable int id, @Valid @RequestBody ProductRequest product) {
+    public Product update(@PathVariable int id, @Valid @RequestBody ProductRequest product) {
         return productService.update(id, product);
     }
 

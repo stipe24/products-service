@@ -1,6 +1,9 @@
 package com.ingemark.productsservice.service;
 
-import com.ingemark.productsservice.model.*;
+import com.ingemark.productsservice.model.CurrencyExchanges;
+import com.ingemark.productsservice.model.Product;
+import com.ingemark.productsservice.model.ProductEntity;
+import com.ingemark.productsservice.model.ProductRequest;
 import com.ingemark.productsservice.repository.ProductRepository;
 import com.ingemark.productsservice.util.CurrencyExchange;
 import com.ingemark.productsservice.util.CurrencyExchangeResolver;
@@ -26,11 +29,21 @@ public class ProductService {
                 .map(product -> map(product, currencyExchanges)).collect(Collectors.toList());
     }
 
-    public ProductEntity save(ProductRequest product) {
-        return productRepository.save(toEntity(product));
+    public Product get(int id) {
+        var product = productRepository.findById(id);
+        return product.map(p ->
+                map(p, (CurrencyExchanges) currencyExchange.getCurrencyExchange())
+        ).orElse(null);
     }
 
-    public ProductEntity update(int id, ProductRequest product) {
+    public Product save(ProductRequest product) {
+        return map(
+                productRepository.save(toEntity(product)),
+                (CurrencyExchanges) currencyExchange.getCurrencyExchange()
+        );
+    }
+
+    public Product update(int id, ProductRequest product) {
         var oldProduct = productRepository.findById(id);
         if (oldProduct.isPresent()) {
             oldProduct.get().setCode(product.getCode());
@@ -39,7 +52,10 @@ public class ProductService {
             oldProduct.get().setCurrency(product.getCurrency());
             oldProduct.get().setDescription(product.getDescription());
             oldProduct.get().setAvailable(product.isAvailable());
-            return productRepository.save(oldProduct.get());
+            return map(
+                    productRepository.save(oldProduct.get()),
+                    (CurrencyExchanges) currencyExchange.getCurrencyExchange()
+            );
         }
         return null;
     }

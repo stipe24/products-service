@@ -17,3 +17,6 @@ application:
   redis:
     port: 6379
     hostname: localhost
+  currency:
+    eur:
+      middle: 7.5
